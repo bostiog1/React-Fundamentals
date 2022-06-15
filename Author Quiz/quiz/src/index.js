@@ -36,8 +36,19 @@ function getTurnData(authors) {
 
 
 const state = {
-  turnDate: getTurnData(authors)
+  turnData: getTurnData(authors),
+  highlight: ''
 };
+
+function onAnswerSelected(answer) {
+  const isCorrect = state.turnData.author.books.some((book) => book === answer);
+  state.highlight = isCorrect ? 'correect' : 'wrong';
+  render();
+}
+
+function render() {
+
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
