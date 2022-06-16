@@ -10,3 +10,12 @@
 .authorimage {
   max-height: 100%;
 }
+
+.answer:hover {
+  background-color: #D0E3F0;
+}
+
+.continue {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
