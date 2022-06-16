@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'; 
 import './App.css';
 import './bootstrap.min.css'
 import { PropTypes } from 'react-bootstrap/esm/Image';
@@ -82,18 +83,36 @@ function Footer() {
   </div>)
 }
 
-function AuthorQuiz ({turnData, highlight, onAnswerSelected, onContinue}) {
-  return (
-    <div className="container-fluid">
-      <Hero />
-      <Turn {...turnData} highlight={highlight} onAnswerSelected={onAnswerSelected}/>
-      <Continue show={highlight === 'correct'} onContinue={onContinue} />
-      <p><link to="/add">Add an author</link></p>
-      <Footer />
-    </div>
-  );
+function mapStateToProps(state) {
+  return {
+    turnData:state.turnData;
+    highlight: state.highlight
+  };
 }
 
+function mapDispatcheToProps(dispatch) {
+  return {
+    onAnswerSelected: (answer) => {
+      dispatch({ type: 'ANSWER_SELECTED', answer});
+  },
+  onContinue: () => {
+    dispatch({ type: 'CONTINUE'})
+  }
+};
+
+const AuthorQuiz = connect(mapStateToProps, mapDispatcheToProps)( 
+  function ({turnData, highlight, onAnswerSelected, onContinue}) {
+    return (
+      <div className="container-fluid">
+        <Hero />
+        <Turn {...turnData} highlight={highlight} onAnswerSelected={onAnswerSelected}/>
+        <Continue show={highlight === 'correct'} onContinue={onContinue} />
+        <p><link to="/add">Add an author</link></p>
+        <Footer />
+      </div>
+    );
+  });
+}
 
 function App() {
   return (
