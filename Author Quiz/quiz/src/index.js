@@ -1,12 +1,15 @@
 Aimport React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, withRouter } from 'react-router-dom';
+import * as Redux from 'redux';
+import * as ReactRedux from 'react-redux';
 import './index.css';
 import App from './App';
 import AddAuthorForm from './AddAuthorForm';
 import reportWebVitals from './reportWebVitals';
 import {shuffle, sample} from 'underscore';
-import { on } from 'events';
+import { ReactReduxContext } from 'react-redux';
+
 
 
 const authors = [
@@ -50,7 +53,13 @@ function resetState() {
   };
 }
 
+function reducer(state, action) {
+  return state; 
+}
+
+let store = Redux.createStore(reducer);
 let state = resetState();
+
 
 function onAnswerSelected(answer) {
   const isCorrect = state.turnData.author.books.some((book) => book === answer);
@@ -59,12 +68,14 @@ function onAnswerSelected(answer) {
 }
 
 function App() {
-  return<AuthorQuiz {...state} 
+  return <ReactRedux.Provider store = {store} >
+    <AuthorQuiz {...state} 
   onAnswerSelected={onAnswerSelected}
   onContinue={() => {
     state = resetState();
     render();
   }}/>;
+  </ReactRedux.Provider>;
 }
 
 const AuthorWrapper = withRouter(({ history }) => 
